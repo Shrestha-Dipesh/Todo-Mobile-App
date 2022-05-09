@@ -10,7 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todo_App">
         <activity
+            android:name=".TaskActivity"
+            android:label="Task App"
+            android:parentActivityName=".MainActivity"
+            android:exported="false" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.todo_app.MainActivity"/>
+        </activity>
+        <activity
             android:name=".MainActivity"
+            android:label="Reminder App"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
