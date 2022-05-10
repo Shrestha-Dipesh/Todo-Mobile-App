@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab_add_task;
@@ -39,11 +41,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
 
         if (requestCode == NEW_TASK_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Task task = new Task(data.getStringExtra(TaskActivity.EXTRA_REPLY));
+            Bundle bundle = intent.getExtras();
+
+            String taskTitle = bundle.getString("TASK_TITLE");
+            String taskDescription = bundle.getString("TASK_DESCRIPTION");
+            String taskCategory = bundle.getString("TASK_CATEGORY");
+            String reminderDate = bundle.getString("REMINDER_DATE");
+            String reminderTime = bundle.getString("REMINDER_TIME");
+
+            Task task = new Task(taskTitle, taskDescription, taskCategory, reminderDate, reminderTime, "Pending");
             taskViewModel.insertTask(task);
         } else {
             Toast.makeText(this, "Task Title is empty", Toast.LENGTH_LONG).show();

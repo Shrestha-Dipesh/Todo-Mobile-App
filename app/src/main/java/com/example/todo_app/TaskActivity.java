@@ -27,6 +27,8 @@ import java.util.Locale;
 public class TaskActivity extends AppCompatActivity {
 
     private EditText editText_task_title;
+    private EditText editText_task_description;
+    private Spinner spinner_task_category;
     private EditText editText_reminder_date;
     private EditText editText_reminder_time;
     private DatePickerDialog.OnDateSetListener setDateListener;
@@ -38,7 +40,7 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
-        Spinner spinner_task_category = findViewById(R.id.task_category_spinner);
+        spinner_task_category = findViewById(R.id.task_category_spinner);
         ArrayList<String> categoryList = new ArrayList<>(Arrays.asList("-Select a category-", "Education", "Sports", "Groceries"));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList);
         spinner_task_category.setAdapter(arrayAdapter);
@@ -76,7 +78,7 @@ public class TaskActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int selected_hour, int selected_minute) {
                 hour = selected_hour;
                 minute = selected_minute;
-                editText_reminder_time.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
+                editText_reminder_time.setText(String.format(Locale.getDefault(), "%02d : %02d", hour, minute));
             }
         };
 
@@ -91,14 +93,31 @@ public class TaskActivity extends AppCompatActivity {
         });
 
         editText_task_title = findViewById(R.id.task_title_editText);
+        editText_task_description = findViewById(R.id.task_description_editText);
+
         final Button button_add_task = findViewById(R.id.add_task_button);
         button_add_task.setOnClickListener(view -> {
             Intent replyIntent = new Intent();
             if (TextUtils.isEmpty(editText_task_title.getText())) {
                 setResult(RESULT_CANCELED, replyIntent);
             } else {
-                String task_title = editText_task_title.getText().toString();
-                replyIntent.putExtra(EXTRA_REPLY, task_title);
+                Bundle replyBundle = new Bundle();
+                String taskTitle = editText_task_title.getText().toString();
+                replyBundle.putString("TASK_TITLE", taskTitle);
+
+                String taskDescription = editText_task_description.getText().toString();
+                replyBundle.putString("TASK_DESCRIPTION", taskDescription);
+
+                String taskCategory = spinner_task_category.getSelectedItem().toString();
+                replyBundle.putString("TASK_CATEGORY", taskCategory);
+
+                String reminderDate = editText_reminder_date.getText().toString();
+                replyBundle.putString("REMINDER_DATE", reminderDate);
+
+                String reminderTime = editText_reminder_time.getText().toString();
+                replyBundle.putString("REMINDER_TIME", reminderTime);
+
+                replyIntent.putExtras(replyBundle);
                 setResult(RESULT_OK, replyIntent);
             }
             finish();
