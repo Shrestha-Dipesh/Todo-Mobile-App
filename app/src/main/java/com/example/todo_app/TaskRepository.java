@@ -1,6 +1,7 @@
 package com.example.todo_app;
 
 import android.app.Application;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
@@ -24,6 +25,27 @@ public class TaskRepository {
     void insertTask(Task task) {
         TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
             taskDao.insertTask(task);
+        });
+    }
+
+    void updateTask(Task task, String taskTitle, String taskDescription, String taskCategory, String reminderDate, String reminderTime) {
+        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int taskId = taskDao.getTaskId(task.getTaskTitle(), task.getTaskDescription(), task.getTaskCategory(), task.getReminderDate(), task.getReminderTime(), task.getTaskStatus());
+            taskDao.updateTask(taskTitle, taskDescription, taskCategory, reminderDate, reminderTime, taskId);
+        });
+    }
+
+    void deleteTask(Task task) {
+        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int taskId = taskDao.getTaskId(task.getTaskTitle(), task.getTaskDescription(), task.getTaskCategory(), task.getReminderDate(), task.getReminderTime(), task.getTaskStatus());
+            taskDao.deleteTask(taskId);
+        });
+    }
+
+    void setTaskStatus(Task task) {
+        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+            int taskId = taskDao.getTaskId(task.getTaskTitle(), task.getTaskDescription(), task.getTaskCategory(), task.getReminderDate(), task.getReminderTime(), task.getTaskStatus());
+            taskDao.setTaskStatus("Completed", taskId);
         });
     }
 }

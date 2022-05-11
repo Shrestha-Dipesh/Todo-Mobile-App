@@ -1,14 +1,19 @@
 package com.example.todo_app;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
@@ -28,6 +33,8 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     private final TextView reminder_month_textView;
     private final TextView reminder_time_textView;
     private final TextView task_status_textView;
+    private final ImageView task_status_imageView;
+    private Task currentTask;
 
     private TaskViewHolder(View itemView) {
         super(itemView);
@@ -39,6 +46,29 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         reminder_month_textView = itemView.findViewById(R.id.reminder_month_textView);
         reminder_time_textView = itemView.findViewById(R.id.reminder_time_textView);
         task_status_textView = itemView.findViewById(R.id.task_status_textView);
+        ImageView delete_task_imageView = itemView.findViewById(R.id.delete_task_imageView);
+        task_status_imageView = itemView.findViewById(R.id.task_status_imageView);
+
+        task_title_textView.setOnClickListener(view -> {
+            Context context = itemView.getContext();
+            Intent intent = new Intent(context, TaskActivity.class);
+            intent.putExtra("CURRENT_TASK", currentTask);
+            context.startActivity(intent);
+        });
+
+        delete_task_imageView.setOnClickListener(view -> {
+            Context context = itemView.getContext();
+            TaskViewModel taskViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(TaskViewModel.class);
+            taskViewModel.deleteTask(currentTask);
+            Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show();
+        });
+
+        task_status_imageView.setOnClickListener(view -> {
+            Context context = itemView.getContext();
+            TaskViewModel taskViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(TaskViewModel.class);
+            taskViewModel.setTaskStatus(currentTask);
+            Toast.makeText(context, "Task Completed", Toast.LENGTH_SHORT).show();
+        });
     }
 
     public void title(String title) {
@@ -59,6 +89,16 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     public void status(String status) {
         task_status_textView.setText(status);
+        if (status.equals("Completed")) {
+            Context context = itemView.getContext();
+            task_status_textView.setTextColor(context.getResources().getColor(R.color.green));
+            task_status_imageView.setColorFilter(context.getResources().getColor(R.color.green));
+            task_status_imageView.setAlpha(0.8F);
+        }
+    }
+
+    public void setCurrentTask(Task currentTask) {
+        this.currentTask = currentTask;
     }
 
     public void date(String date) {

@@ -17,7 +17,7 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
-    private static volatile TaskRoomDatabase INSTANCE;
+    public static volatile TaskRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
@@ -42,6 +42,9 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
                 task_dao.deleteAllTasks();
 
                 Task task = new Task("Drink Water", "Remember to drink water", "Sports","10/05/2022", "06 : 25", "Pending");
+                task_dao.insertTask(task);
+
+                task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");
                 task_dao.insertTask(task);
 
                 task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");

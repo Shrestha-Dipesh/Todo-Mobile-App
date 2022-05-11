@@ -71,16 +71,40 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/task_title_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginLeft="12dp"
-                android:singleLine="true"
-                android:text="Task Title"
-                android:textColor="@color/primary_blue"
-                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/task_title_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:singleLine="true"
+                    android:text="Task Title"
+                    android:textColor="@color/primary_blue"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/task_status_imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:alpha="0.4"
+                    android:src="@drawable/ic_complete_task" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/delete_task_imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_delete_task" />
+                </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/task_description_textView"
@@ -113,7 +137,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="right"
                     android:text="Pending"
-                    android:textColor="@android:color/holo_red_dark" />
+                    android:textColor="@color/red" />
             </LinearLayout>
 
         </LinearLayout>

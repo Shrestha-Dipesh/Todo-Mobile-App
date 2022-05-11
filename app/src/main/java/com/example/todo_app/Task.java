@@ -5,33 +5,34 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "task_list")
-public class Task {
+public class Task implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int taskId;
 
     @NonNull
     @ColumnInfo(name = "task_title")
-    private final String taskTitle;
+    private String taskTitle;
 
     @NonNull
     @ColumnInfo(name = "task_description")
-    private final String taskDescription;
+    private String taskDescription;
 
     @NonNull
     @ColumnInfo(name = "task_category")
-    private final String taskCategory;
+    private String taskCategory;
 
     @NonNull
     @ColumnInfo(name = "reminder_date")
-    private final String reminderDate;
+    private String reminderDate;
 
     @NonNull
     @ColumnInfo(name = "reminder_time")
-    private final String reminderTime;
+    private String reminderTime;
 
     @NonNull
     @ColumnInfo(name = "task_status")
@@ -46,8 +47,16 @@ public class Task {
         this.taskStatus = taskStatus;
     }
 
+    public void setTaskId(int task_id) {
+        this.taskId = taskId;
+    }
+
     public int getTaskId() {
         return this.taskId;
+    }
+
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
     }
 
     @NonNull
@@ -55,9 +64,18 @@ public class Task {
         return this.taskTitle;
     }
 
+
+    public void setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
+    }
+
     @NonNull
     public String getTaskDescription() {
         return this.taskDescription;
+    }
+
+    public void setTaskCategory(String taskCategory) {
+        this.taskCategory = taskCategory;
     }
 
     @NonNull
@@ -65,9 +83,17 @@ public class Task {
         return this.taskCategory;
     }
 
+    public void setReminderDate(String reminderDate) {
+        this.reminderDate = reminderDate;
+    }
+
     @NonNull
     public String getReminderDate() {
         return this.reminderDate;
+    }
+
+    public void setReminderTime(String reminderTime) {
+        this.reminderTime = reminderTime;
     }
 
     @NonNull
@@ -80,9 +106,7 @@ public class Task {
         return this.taskStatus;
     }
 
-    public void setTaskId(int task_id) {
-        this.taskId = taskId;
-    }
+
 
 
 }
