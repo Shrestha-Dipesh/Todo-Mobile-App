@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
             Task task = new Task(taskTitle, taskDescription, taskCategory, reminderDate, reminderTime, "Pending");
             taskViewModel.insertTask(task);
-        } else {
-            Toast.makeText(this, "Task Title is empty", Toast.LENGTH_LONG).show();
         }
     }
 }

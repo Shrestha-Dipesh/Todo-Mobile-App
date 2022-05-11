@@ -101,10 +101,10 @@ public class TaskActivity extends AppCompatActivity {
 
         final Button button_add_task = findViewById(R.id.add_task_button);
         button_add_task.setOnClickListener(view -> {
-            Intent replyIntent = new Intent();
-            if (TextUtils.isEmpty(editText_task_title.getText())) {
-                setResult(RESULT_CANCELED, replyIntent);
+            if (TextUtils.isEmpty(editText_task_title.getText()) || TextUtils.isEmpty(editText_task_description.getText()) || spinner_task_category.getSelectedItem().toString().equals("-Select a category-") || TextUtils.isEmpty(editText_reminder_date.getText()) || TextUtils.isEmpty(editText_reminder_time.getText())) {
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             } else {
+                Intent replyIntent = new Intent();
                 Bundle replyBundle = new Bundle();
                 String taskTitle = editText_task_title.getText().toString();
                 replyBundle.putString("TASK_TITLE", taskTitle);
@@ -123,8 +123,9 @@ public class TaskActivity extends AppCompatActivity {
 
                 replyIntent.putExtras(replyBundle);
                 setResult(RESULT_OK, replyIntent);
+                finish();
             }
-            finish();
+
         });
 
         Task currentTask = (Task) getIntent().getSerializableExtra("CURRENT_TASK");
@@ -165,15 +166,19 @@ public class TaskActivity extends AppCompatActivity {
             spinner_task_category.setSelection(spinnerPosition);
 
             button_add_task.setOnClickListener(view -> {
-                Intent intent = new Intent(TaskActivity.this, MainActivity.class);
-                TaskViewModel taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-                String taskTitle = editText_task_title.getText().toString();
-                String taskDescription = editText_task_description.getText().toString();
-                String taskCategory = spinner_task_category.getSelectedItem().toString();
-                String reminderDate = editText_reminder_date.getText().toString();
-                String reminderTime = editText_reminder_time.getText().toString();
-                taskViewModel.updateTask(currentTask, taskTitle, taskDescription, taskCategory, reminderDate, reminderTime);
-                startActivity(intent);
+                if (TextUtils.isEmpty(editText_task_title.getText()) || TextUtils.isEmpty(editText_task_description.getText()) || spinner_task_category.getSelectedItem().toString().equals("-Select a category-") || TextUtils.isEmpty(editText_reminder_date.getText()) || TextUtils.isEmpty(editText_reminder_time.getText())) {
+                    Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent(TaskActivity.this, MainActivity.class);
+                    TaskViewModel taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
+                    String taskTitle = editText_task_title.getText().toString();
+                    String taskDescription = editText_task_description.getText().toString();
+                    String taskCategory = spinner_task_category.getSelectedItem().toString();
+                    String reminderDate = editText_reminder_date.getText().toString();
+                    String reminderTime = editText_reminder_time.getText().toString();
+                    taskViewModel.updateTask(currentTask, taskTitle, taskDescription, taskCategory, reminderDate, reminderTime);
+                    startActivity(intent);
+                }
             });
         }
     }
