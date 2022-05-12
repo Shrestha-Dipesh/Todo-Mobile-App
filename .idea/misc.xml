@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_complete_task.xml" value="0.1" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_delete_task.xml" value="0.1" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_task.xml" value="0.264" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/hello.xml" value="0.17481884057971014" />

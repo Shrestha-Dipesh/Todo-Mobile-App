@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.ListAdapter;
 
 public class TaskListAdapter extends ListAdapter<Task, TaskViewHolder> {
 
+    private Task currentTask;
+
     public TaskListAdapter(@NonNull DiffUtil.ItemCallback<Task> diffCallback) {
         super(diffCallback);
     }
@@ -19,14 +21,14 @@ public class TaskListAdapter extends ListAdapter<Task, TaskViewHolder> {
 
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
-        Task current = getItem(position);
-        holder.title(current.getTaskTitle());
-        holder.description(current.getTaskDescription());
-        holder.category(current.getTaskCategory());
-        holder.time(current.getReminderTime());
-        holder.status(current.getTaskStatus());
-        holder.date(current.getReminderDate());
-        holder.setCurrentTask(current);
+        currentTask = getItem(position);
+        holder.title(currentTask.getTaskTitle());
+        holder.description(currentTask.getTaskDescription());
+        holder.category(currentTask.getTaskCategory());
+        holder.time(currentTask.getReminderTime());
+        holder.status(currentTask.getTaskStatus());
+        holder.date(currentTask.getReminderDate());
+        holder.setCurrentTask(currentTask);
     }
 
     static class TaskDiff extends DiffUtil.ItemCallback<Task> {
@@ -39,5 +41,9 @@ public class TaskListAdapter extends ListAdapter<Task, TaskViewHolder> {
         public boolean areContentsTheSame(@NonNull Task oldTask, @NonNull Task newTask) {
             return oldTask.getTaskTitle().equals(newTask.getTaskTitle());
         }
+    }
+
+    public Task getCurrentTask() {
+        return currentTask;
     }
 }
