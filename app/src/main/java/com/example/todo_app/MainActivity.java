@@ -48,6 +48,21 @@ public class MainActivity extends AppCompatActivity {
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
         taskViewModel.getAllTasks().observe(this, tasks -> {
             taskListAdapter.submitList(tasks);
+            String totalTasksCount = String.valueOf(taskViewModel.getAllTasks().getValue().size());
+            TextView textView_total_tasks = findViewById(R.id.total_tasks_textView);
+            textView_total_tasks.setText("Total: " + totalTasksCount);
+        });
+
+        taskViewModel.getPendingTasks().observe(this, tasks -> {
+            String pendingTasksCount = String.valueOf(taskViewModel.getPendingTasks().getValue().size());
+            TextView textView_pending_tasks = findViewById(R.id.pending_tasks_textView);
+            textView_pending_tasks.setText("Pending: " + pendingTasksCount);
+        });
+
+        taskViewModel.getCompletedTasks().observe(this, tasks -> {
+            String completedTasksCount = String.valueOf(taskViewModel.getCompletedTasks().getValue().size());
+            TextView textView_completed_tasks = findViewById(R.id.completed_tasks_textView);
+            textView_completed_tasks.setText("Completed: " + completedTasksCount);
         });
 
         fab_add_task = findViewById(R.id.add_task_fab);
@@ -97,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
             switch(direction) {
                 case ItemTouchHelper.RIGHT:
                     taskViewModel.setTaskStatus(task);
-                    Toast.makeText(MainActivity.this, "Task Completed", Toast.LENGTH_SHORT).show();
                     break;
 
                 case ItemTouchHelper.LEFT:

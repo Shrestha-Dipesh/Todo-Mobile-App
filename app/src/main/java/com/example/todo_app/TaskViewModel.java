@@ -10,16 +10,26 @@ import java.util.List;
 public class TaskViewModel extends AndroidViewModel {
 
     private TaskRepository taskRepository;
-    private final LiveData<List<Task>> allTasks;
+    private final LiveData<List<Task>> allTasks, pendingTasks, completedTasks;
 
     public TaskViewModel(Application application) {
         super(application);
         taskRepository = new TaskRepository(application);
         allTasks = taskRepository.getAllTasks();
+        pendingTasks = taskRepository.getPendingTasks();
+        completedTasks = taskRepository.getCompletedTasks();
     }
 
     LiveData<List<Task>> getAllTasks() {
         return allTasks;
+    }
+
+    public LiveData<List<Task>> getPendingTasks() {
+        return pendingTasks;
+    }
+
+    public LiveData<List<Task>> getCompletedTasks() {
+        return completedTasks;
     }
 
     public void insertTask(Task task) {

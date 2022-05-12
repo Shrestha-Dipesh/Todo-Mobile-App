@@ -35,4 +35,10 @@ public interface TaskDao {
 
     @Query("DELETE FROM task_list WHERE task_status = 'Completed'")
     void deleteCompletedTasks();
+
+    @Query("SELECT * FROM task_list WHERE task_status = 'Pending'")
+    LiveData<List<Task>> getPendingTasks();
+
+    @Query("SELECT * FROM task_list WHERE task_status = 'Completed'")
+    LiveData<List<Task>> getCompletedTasks();
 }

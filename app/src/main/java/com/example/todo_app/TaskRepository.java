@@ -10,16 +10,26 @@ import java.util.List;
 public class TaskRepository {
 
     private TaskDao taskDao;
-    private LiveData<List<Task>> allTasks;
+    private LiveData<List<Task>> allTasks, pendingTasks, completedTasks;
 
     TaskRepository(Application application) {
         TaskRoomDatabase taskRoomDatabase = TaskRoomDatabase.getDatabase(application);
         taskDao = taskRoomDatabase.taskDao();
         allTasks = taskDao.getAllTasks();
+        pendingTasks = taskDao.getPendingTasks();
+        completedTasks = taskDao.getCompletedTasks();
     }
 
     LiveData<List<Task>> getAllTasks() {
         return allTasks;
+    }
+
+    LiveData<List<Task>> getPendingTasks() {
+        return pendingTasks;
+    }
+
+    public LiveData<List<Task>> getCompletedTasks() {
+        return completedTasks;
     }
 
     void insertTask(Task task) {

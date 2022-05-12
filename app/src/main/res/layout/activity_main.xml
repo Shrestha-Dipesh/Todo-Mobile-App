@@ -39,7 +39,7 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/total_task_textView"
+        android:id="@+id/total_tasks_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -50,17 +50,17 @@
         app:layout_constraintTop_toBottomOf="@+id/todo_textView" />
 
     <TextView
-        android:id="@+id/pending_task_textView"
+        android:id="@+id/pending_tasks_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Pending: 12"
-        app:layout_constraintEnd_toStartOf="@+id/completed_task_textView"
-        app:layout_constraintStart_toEndOf="@+id/total_task_textView"
+        app:layout_constraintEnd_toStartOf="@+id/completed_tasks_textView"
+        app:layout_constraintStart_toEndOf="@+id/total_tasks_textView"
         app:layout_constraintTop_toBottomOf="@+id/todo_textView" />
 
     <TextView
-        android:id="@+id/completed_task_textView"
+        android:id="@+id/completed_tasks_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -92,7 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pending_task_textView"
+        app:layout_constraintTop_toBottomOf="@+id/pending_tasks_textView"
         tools:listitem="@layout/task_item_recyclerview"/>
 
 
