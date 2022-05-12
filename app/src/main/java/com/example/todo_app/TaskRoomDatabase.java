@@ -44,10 +44,13 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
                 Task task = new Task("Drink Water", "Remember to drink water", "Sports","10/05/2022", "06 : 25", "Pending");
                 task_dao.insertTask(task);
 
-                task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");
+                task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Completed");
                 task_dao.insertTask(task);
 
-                task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");
+                task = new Task("Eat Food", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");
+                task_dao.insertTask(task);
+
+                task = new Task("Study Laptop", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Completed");
                 task_dao.insertTask(task);
             });
         }

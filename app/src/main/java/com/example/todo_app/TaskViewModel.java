@@ -37,4 +37,12 @@ public class TaskViewModel extends AndroidViewModel {
     public void setTaskStatus(Task task) {
         taskRepository.setTaskStatus(task);
     }
+
+    public void deleteAllTasks() {
+        taskRepository.deleteAllTasks();
+    }
+
+    public void deleteCompletedTasks() {
+        taskRepository.deleteCompletedTasks();
+    }
 }

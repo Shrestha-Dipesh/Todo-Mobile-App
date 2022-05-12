@@ -1,8 +1,9 @@
 package com.example.todo_app;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,20 +13,28 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab_add_task;
+    private FloatingActionButton fab_delete_tasks;
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
     private TaskViewModel taskViewModel;
     private RecyclerView recyclerView;
     private final TaskListAdapter taskListAdapter = new TaskListAdapter(new TaskListAdapter.TaskDiff());
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
         fab_add_task.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, TaskActivity.class);
             startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
+        });
+
+        fab_delete_tasks = findViewById(R.id.delete_tasks_fab);
+        fab_delete_tasks.setOnClickListener(view -> {
+            showDeleteDialog();
         });
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -76,15 +90,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            LiveData<List<Task>> liveTaskList = taskViewModel.getAllTasks();
+            List<Task> taskList = liveTaskList.getValue();
+            Task task = taskList.get(viewHolder.getPosition());
+
             switch(direction) {
                 case ItemTouchHelper.RIGHT:
-                    taskViewModel.setTaskStatus(taskListAdapter.getCurrentTask());
+                    taskViewModel.setTaskStatus(task);
                     Toast.makeText(MainActivity.this, "Task Completed", Toast.LENGTH_SHORT).show();
                     break;
 
                 case ItemTouchHelper.LEFT:
-                    Task deletedTask = taskListAdapter.getCurrentTask();
-                    taskViewModel.deleteTask(taskListAdapter.getCurrentTask());
+                    Task deletedTask = task;
+                    taskViewModel.deleteTask(task);
                     Snackbar.make(recyclerView, "Task Deleted", Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
@@ -102,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(getResources().getColor(R.color.red))
                     .addSwipeLeftActionIcon(R.drawable.ic_delete_task)
+                    .setActionIconTint(getResources().getColor(R.color.white))
                     .addSwipeRightBackgroundColor(getResources().getColor(R.color.green))
                     .addSwipeRightActionIcon(R.drawable.ic_complete_task)
                     .create()
@@ -109,4 +128,32 @@ public class MainActivity extends AppCompatActivity {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     };
+
+    public void showDeleteDialog() {
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        final View deleteDialogView = getLayoutInflater().inflate(R.layout.delete_popup, null);
+        ImageView imageView_cancel = deleteDialogView.findViewById(R.id.cancel_imageView);
+        Button button_all_tasks = deleteDialogView.findViewById(R.id.all_tasks_button);
+        Button button_completed_tasks = deleteDialogView.findViewById(R.id.completed_tasks_button);
+
+        alertDialogBuilder.setView(deleteDialogView);
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        imageView_cancel.setOnClickListener(view -> {
+            alertDialog.dismiss();
+        });
+
+        button_all_tasks.setOnClickListener(view -> {
+            taskViewModel.deleteAllTasks();
+            alertDialog.dismiss();
+            Toast.makeText(this, "All Tasks Deleted", Toast.LENGTH_SHORT).show();
+        });
+
+        button_completed_tasks.setOnClickListener(view -> {
+            taskViewModel.deleteCompletedTasks();
+            alertDialog.dismiss();
+            Toast.makeText(this, "Completed Tasks Removed", Toast.LENGTH_SHORT).show();
+        });
+    }
 }

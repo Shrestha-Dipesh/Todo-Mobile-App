@@ -89,11 +89,15 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     public void status(String status) {
         task_status_textView.setText(status);
+        Context context = itemView.getContext();
         if (status.equals("Completed")) {
-            Context context = itemView.getContext();
             task_status_textView.setTextColor(context.getResources().getColor(R.color.green));
             task_status_imageView.setColorFilter(context.getResources().getColor(R.color.green));
             task_status_imageView.setAlpha(0.8F);
+        } else {
+            task_status_textView.setTextColor(context.getResources().getColor(R.color.red));
+            task_status_imageView.setColorFilter(context.getResources().getColor(R.color.gray));
+            task_status_imageView.setAlpha(0.4F);
         }
     }
 
@@ -119,4 +123,5 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_recyclerview, parent, false);
         return new TaskViewHolder(view);
     }
+
 }

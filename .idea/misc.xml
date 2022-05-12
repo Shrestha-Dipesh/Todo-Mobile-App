@@ -5,11 +5,12 @@
       <map>
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_complete_task.xml" value="0.1" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_delete_task.xml" value="0.1" />
-        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_task.xml" value="0.264" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/delete_popup.xml" value="0.264" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/hello.xml" value="0.17481884057971014" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/spinner_item.xml" value="0.11203703703703703" />
-        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/task_item_recyclerview.xml" value="0.25" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/task_item_recyclerview.xml" value="0.4" />
       </map>
     </option>
   </component>

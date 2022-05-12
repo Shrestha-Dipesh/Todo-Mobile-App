@@ -33,7 +33,6 @@ public interface TaskDao {
     @Query("DELETE FROM task_list")
     void deleteAllTasks();
 
-
-
-
+    @Query("DELETE FROM task_list WHERE task_status = 'Completed'")
+    void deleteCompletedTasks();
 }

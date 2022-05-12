@@ -48,4 +48,16 @@ public class TaskRepository {
             taskDao.setTaskStatus("Completed", taskId);
         });
     }
+
+    void deleteAllTasks() {
+        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+            taskDao.deleteAllTasks();
+        });
+    }
+
+    void deleteCompletedTasks() {
+        TaskRoomDatabase.databaseWriteExecutor.execute(() -> {
+            taskDao.deleteCompletedTasks();
+        });
+    }
 }
