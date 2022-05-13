@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog alertDialog;
     private TextView textView_total_tasks, textView_pending_tasks, textView_completed_tasks;
+    private String selectedTask = "Total";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
         textView_total_tasks = findViewById(R.id.total_tasks_textView);
         taskViewModel.getAllTasks().observe(this, tasks -> {
-            taskListAdapter.submitList(tasks);
             String totalTasksCount = String.valueOf(taskViewModel.getAllTasks().getValue().size());
             textView_total_tasks.setText("Total: " + totalTasksCount);
             textView_total_tasks.setTextColor(getResources().getColor(R.color.primary_blue));
@@ -78,6 +78,20 @@ public class MainActivity extends AppCompatActivity {
         fab_delete_tasks.setOnClickListener(view -> {
             showDeleteDialog();
         });
+        
+        if (selectedTask == "Total") {
+            taskViewModel.getAllTasks().observe(this, tasks -> {
+                taskListAdapter.submitList(tasks);
+            });
+        } else if (selectedTask == "Pending") {
+            taskViewModel.getPendingTasks().observe(this, tasks -> {
+                taskListAdapter.submitList(tasks);
+            });
+        } else if (selectedTask == "Completed") {
+            taskViewModel.getCompletedTasks().observe(this, tasks -> {
+                taskListAdapter.submitList(tasks);
+            });;
+        }
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -85,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         textView_total_tasks.setOnClickListener(view -> {
             taskViewModel.getAllTasks().observe(this, tasks -> {
                 taskListAdapter.submitList(tasks);
+                selectedTask = "Total";
                 textView_total_tasks.setTextColor(getResources().getColor(R.color.primary_blue));
                 textView_pending_tasks.setTextColor(getResources().getColor(R.color.gray));
                 textView_completed_tasks.setTextColor(getResources().getColor(R.color.gray));
@@ -94,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         textView_pending_tasks.setOnClickListener(view -> {
             taskViewModel.getPendingTasks().observe(this, tasks -> {
                 taskListAdapter.submitList(tasks);
+                selectedTask = "Pending";
                 textView_pending_tasks.setTextColor(getResources().getColor(R.color.primary_blue));
                 textView_total_tasks.setTextColor(getResources().getColor(R.color.gray));
                 textView_completed_tasks.setTextColor(getResources().getColor(R.color.gray));
@@ -103,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         textView_completed_tasks.setOnClickListener(view -> {
             taskViewModel.getCompletedTasks().observe(this, tasks -> {
                 taskListAdapter.submitList(tasks);
+                selectedTask = "Completed";
                 textView_completed_tasks.setTextColor(getResources().getColor(R.color.primary_blue));
                 textView_total_tasks.setTextColor(getResources().getColor(R.color.gray));
                 textView_pending_tasks.setTextColor(getResources().getColor(R.color.gray));
@@ -160,7 +177,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            LiveData<List<Task>> liveTaskList = taskViewModel.getAllTasks();
+            LiveData<List<Task>> liveTaskList = null;
+            if (selectedTask == "Total") {
+                liveTaskList = taskViewModel.getAllTasks();
+            } else if (selectedTask == "Pending") {
+                liveTaskList = taskViewModel.getPendingTasks();
+            } else if (selectedTask == "Completed") {
+                liveTaskList = taskViewModel.getCompletedTasks();
+            }
             List<Task> taskList = liveTaskList.getValue();
             Task task = taskList.get(viewHolder.getPosition());
 
