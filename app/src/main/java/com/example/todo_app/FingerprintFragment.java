@@ -30,6 +30,7 @@ public class FingerprintFragment extends Fragment {
             Context context = view.getContext();
             Intent intent = new Intent(context, MainActivity.class);
             startActivity(intent);
+            getActivity().finish();
         });
     }
 }

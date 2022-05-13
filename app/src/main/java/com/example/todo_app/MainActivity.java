@@ -3,6 +3,7 @@ package com.example.todo_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
@@ -27,8 +29,6 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab_add_task;
-    private FloatingActionButton fab_delete_tasks;
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
     private TaskViewModel taskViewModel;
     private RecyclerView recyclerView;
@@ -68,13 +68,13 @@ public class MainActivity extends AppCompatActivity {
             textView_completed_tasks.setText("Completed: " + completedTasksCount);
         });
 
-        fab_add_task = findViewById(R.id.add_task_fab);
+        FloatingActionButton fab_add_task = findViewById(R.id.add_task_fab);
         fab_add_task.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, TaskActivity.class);
             startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
         });
 
-        fab_delete_tasks = findViewById(R.id.delete_tasks_fab);
+        FloatingActionButton fab_delete_tasks = findViewById(R.id.delete_tasks_fab);
         fab_delete_tasks.setOnClickListener(view -> {
             showDeleteDialog();
         });
@@ -107,6 +107,31 @@ public class MainActivity extends AppCompatActivity {
                 textView_total_tasks.setTextColor(getResources().getColor(R.color.gray));
                 textView_pending_tasks.setTextColor(getResources().getColor(R.color.gray));
             });
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
+        boolean isDarkMode = sharedPreferences.getBoolean("NightMode", false);
+        SharedPreferences.Editor sharedPreferenceEdit = sharedPreferences.edit();
+
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        FloatingActionButton fab_dark_mode = findViewById(R.id.dark_mode_fab);
+        fab_dark_mode.setOnClickListener(view -> {
+            if (isDarkMode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                sharedPreferenceEdit.putBoolean("NightMode", false);
+                Toast.makeText(MainActivity.this, "Dark Mode Disabled", Toast.LENGTH_SHORT).show();
+
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                sharedPreferenceEdit.putBoolean("NightMode", true);
+                Toast.makeText(MainActivity.this, "Dark Mode Enabled", Toast.LENGTH_SHORT).show();
+            }
+            sharedPreferenceEdit.apply();
         });
     }
 
