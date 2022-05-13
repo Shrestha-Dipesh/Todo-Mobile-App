@@ -33,8 +33,6 @@ public class TaskActivity extends AppCompatActivity {
     private Spinner spinner_task_category;
     private EditText editText_reminder_date;
     private EditText editText_reminder_time;
-    private TextView textView_add_task;
-    private TextView textView_fill;
     private DatePickerDialog.OnDateSetListener setDateListener;
     private int hour, minute;
     public static final String EXTRA_REPLY = "com.example.todo_app.REPLY";
@@ -44,17 +42,20 @@ public class TaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
 
+        //Create and add item to spinner
         spinner_task_category = findViewById(R.id.task_category_spinner);
         ArrayList<String> categoryList = new ArrayList<>(Arrays.asList("-Select a category-", "Education", "Work", "Groceries", "Sports", "Miscellaneous"));
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categoryList);
         spinner_task_category.setAdapter(arrayAdapter);
 
+        //Create a calendar
         editText_reminder_date = findViewById(R.id.reminder_date_editText);
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        //Display calendar on date textview click
         editText_reminder_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +67,7 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
+        //Set the date on the textview
         setDateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -75,8 +77,8 @@ public class TaskActivity extends AppCompatActivity {
             }
         };
 
+        //Set the time on the textview
         editText_reminder_time = findViewById(R.id.reminder_time_editText);
-
         TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selected_hour, int selected_minute) {
@@ -86,6 +88,7 @@ public class TaskActivity extends AppCompatActivity {
             }
         };
 
+        //Display clock on time textview click
         editText_reminder_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,11 +99,12 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
+        //Add task when button is clicked
         editText_task_title = findViewById(R.id.task_title_editText);
         editText_task_description = findViewById(R.id.task_description_editText);
-
         final Button button_add_task = findViewById(R.id.add_task_button);
         button_add_task.setOnClickListener(view -> {
+            //Create an intent bundle and pass all task details if not null
             if (TextUtils.isEmpty(editText_task_title.getText()) || TextUtils.isEmpty(editText_task_description.getText()) || spinner_task_category.getSelectedItem().toString().equals("-Select a category-") || TextUtils.isEmpty(editText_reminder_date.getText()) || TextUtils.isEmpty(editText_reminder_time.getText())) {
                 Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
             } else {
@@ -128,11 +132,12 @@ public class TaskActivity extends AppCompatActivity {
 
         });
 
+        //Fill in the details if task is to be updated
         Task currentTask = (Task) getIntent().getSerializableExtra("CURRENT_TASK");
         if (currentTask != null) {
-            textView_add_task = findViewById(R.id.add_task_textview);
+            TextView textView_add_task = findViewById(R.id.add_task_textview);
             textView_add_task.setText("Update Task");
-            textView_fill = findViewById(R.id.fill_textview);
+            TextView textView_fill = findViewById(R.id.fill_textview);
             textView_fill.setText("Fill the details below to update task in your TODO");
             button_add_task.setText("Update Task");
             editText_task_title.setText(currentTask.getTaskTitle());
@@ -165,6 +170,7 @@ public class TaskActivity extends AppCompatActivity {
 
             spinner_task_category.setSelection(spinnerPosition);
 
+            //Pass the updated task details to main activity
             button_add_task.setOnClickListener(view -> {
                 if (TextUtils.isEmpty(editText_task_title.getText()) || TextUtils.isEmpty(editText_task_description.getText()) || spinner_task_category.getSelectedItem().toString().equals("-Select a category-") || TextUtils.isEmpty(editText_reminder_date.getText()) || TextUtils.isEmpty(editText_reminder_time.getText())) {
                     Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();

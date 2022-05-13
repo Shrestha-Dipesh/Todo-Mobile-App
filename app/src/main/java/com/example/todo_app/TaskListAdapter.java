@@ -12,11 +12,13 @@ public class TaskListAdapter extends ListAdapter<Task, TaskViewHolder> {
         super(diffCallback);
     }
 
+    @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return TaskViewHolder.create(parent);
     }
 
+    //Set the task details to appropriate method of TaskViewHolder
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position) {
         Task currentTask = getItem(position);
@@ -29,6 +31,7 @@ public class TaskListAdapter extends ListAdapter<Task, TaskViewHolder> {
         holder.setCurrentTask(currentTask);
     }
 
+    //Check if the task is same
     static class TaskDiff extends DiffUtil.ItemCallback<Task> {
         @Override
         public boolean areItemsTheSame(@NonNull Task oldTask, @NonNull Task newTask) {

@@ -49,6 +49,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         ImageView delete_task_imageView = itemView.findViewById(R.id.delete_task_imageView);
         task_status_imageView = itemView.findViewById(R.id.task_status_imageView);
 
+        //Edit the selected task
         task_title_textView.setOnClickListener(view -> {
             Context context = itemView.getContext();
             Intent intent = new Intent(context, TaskActivity.class);
@@ -56,6 +57,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             context.startActivity(intent);
         });
 
+        //Delete the selected task
         delete_task_imageView.setOnClickListener(view -> {
             Context context = itemView.getContext();
             TaskViewModel taskViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(TaskViewModel.class);
@@ -63,6 +65,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             Toast.makeText(context, "Task Deleted", Toast.LENGTH_SHORT).show();
         });
 
+        //Complete the selected task
         task_status_imageView.setOnClickListener(view -> {
             Context context = itemView.getContext();
             TaskViewModel taskViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(TaskViewModel.class);
@@ -106,10 +109,11 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void date(String date) {
+        //Format the date
         SimpleDateFormat dateFormat = new SimpleDateFormat("EE dd MMM yyyy", Locale.US);
         SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         try {
-            Date parsedDate= inputDateFormat.parse(date);
+            Date parsedDate = inputDateFormat.parse(date);
             String outputDateString = dateFormat.format(parsedDate);
             String[] dateParts = outputDateString.split(" ");
             reminder_day_textView.setText(dateParts[0]);
@@ -119,6 +123,7 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
             e.printStackTrace();
         }
     }
+
     static TaskViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_recyclerview, parent, false);
         return new TaskViewHolder(view);

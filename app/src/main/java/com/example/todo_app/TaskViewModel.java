@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TaskViewModel extends AndroidViewModel {
 
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
     private final LiveData<List<Task>> allTasks, pendingTasks, completedTasks;
 
     public TaskViewModel(Application application) {

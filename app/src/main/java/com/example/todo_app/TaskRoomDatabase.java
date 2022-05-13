@@ -17,7 +17,7 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
-    public static volatile TaskRoomDatabase INSTANCE;
+    private static volatile TaskRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
@@ -32,7 +32,7 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private static RoomDatabase.Callback roomDatabaseCallback = new RoomDatabase.Callback() {
+    private static final RoomDatabase.Callback roomDatabaseCallback = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase database) {
             super.onCreate(database);
@@ -40,18 +40,6 @@ public abstract class TaskRoomDatabase extends RoomDatabase {
             databaseWriteExecutor.execute(() -> {
                 TaskDao task_dao = INSTANCE.taskDao();
                 task_dao.deleteAllTasks();
-
-                Task task = new Task("Drink Water", "Remember to drink water", "Sports","10/05/2022", "06 : 25", "Pending");
-                task_dao.insertTask(task);
-
-                task = new Task("Read Book", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Completed");
-                task_dao.insertTask(task);
-
-                task = new Task("Eat Food", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Pending");
-                task_dao.insertTask(task);
-
-                task = new Task("Study Laptop", "Remember to read book", "Education", "11/11/2022", "03 : 20", "Completed");
-                task_dao.insertTask(task);
             });
         }
     };

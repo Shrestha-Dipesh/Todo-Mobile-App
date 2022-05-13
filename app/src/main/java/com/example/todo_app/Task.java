@@ -55,7 +55,7 @@ public class Task implements Serializable {
         return this.taskId;
     }
 
-    public void setTaskTitle(String taskTitle) {
+    public void setTaskTitle(@NonNull String taskTitle) {
         this.taskTitle = taskTitle;
     }
 
@@ -65,7 +65,7 @@ public class Task implements Serializable {
     }
 
 
-    public void setTaskDescription(String taskDescription) {
+    public void setTaskDescription(@NonNull String taskDescription) {
         this.taskDescription = taskDescription;
     }
 
@@ -74,7 +74,7 @@ public class Task implements Serializable {
         return this.taskDescription;
     }
 
-    public void setTaskCategory(String taskCategory) {
+    public void setTaskCategory(@NonNull String taskCategory) {
         this.taskCategory = taskCategory;
     }
 
@@ -83,7 +83,7 @@ public class Task implements Serializable {
         return this.taskCategory;
     }
 
-    public void setReminderDate(String reminderDate) {
+    public void setReminderDate(@NonNull String reminderDate) {
         this.reminderDate = reminderDate;
     }
 
@@ -92,7 +92,7 @@ public class Task implements Serializable {
         return this.reminderDate;
     }
 
-    public void setReminderTime(String reminderTime) {
+    public void setReminderTime(@NonNull String reminderTime) {
         this.reminderTime = reminderTime;
     }
 
@@ -105,8 +105,6 @@ public class Task implements Serializable {
     public String getTaskStatus() {
         return this.taskStatus;
     }
-
-
 
 
 }

@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private TaskViewModel taskViewModel;
     private RecyclerView recyclerView;
     private final TaskListAdapter taskListAdapter = new TaskListAdapter(new TaskListAdapter.TaskDiff());
-    private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog alertDialog;
     private TextView textView_total_tasks, textView_pending_tasks, textView_completed_tasks;
     private String selectedTask = "Total";
@@ -43,12 +42,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Set recyclerview adapter
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setAdapter(taskListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        //Set the total, pending and completed tasks count
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
-
         textView_total_tasks = findViewById(R.id.total_tasks_textView);
         taskViewModel.getAllTasks().observe(this, tasks -> {
             String totalTasksCount = String.valueOf(taskViewModel.getAllTasks().getValue().size());
@@ -68,34 +68,38 @@ public class MainActivity extends AppCompatActivity {
             textView_completed_tasks.setText("Completed: " + completedTasksCount);
         });
 
+        //Launch add new task activity
         FloatingActionButton fab_add_task = findViewById(R.id.add_task_fab);
         fab_add_task.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, TaskActivity.class);
             startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
         });
 
+        //Display the task delete options
         FloatingActionButton fab_delete_tasks = findViewById(R.id.delete_tasks_fab);
         fab_delete_tasks.setOnClickListener(view -> {
             showDeleteDialog();
         });
-        
-        if (selectedTask == "Total") {
-            taskViewModel.getAllTasks().observe(this, tasks -> {
-                taskListAdapter.submitList(tasks);
-            });
-        } else if (selectedTask == "Pending") {
-            taskViewModel.getPendingTasks().observe(this, tasks -> {
-                taskListAdapter.submitList(tasks);
-            });
-        } else if (selectedTask == "Completed") {
-            taskViewModel.getCompletedTasks().observe(this, tasks -> {
-                taskListAdapter.submitList(tasks);
-            });;
+
+        //Display the selected task category
+        switch (selectedTask) {
+            case "Total":
+                taskViewModel.getAllTasks().observe(this, taskListAdapter::submitList);
+                break;
+            case "Pending":
+                taskViewModel.getPendingTasks().observe(this, taskListAdapter::submitList);
+                break;
+            case "Completed":
+                taskViewModel.getCompletedTasks().observe(this, taskListAdapter::submitList);
+                ;
+                break;
         }
 
+        //Attach ItemTouchHelper to recyclerview
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        //Display the clicked task category list
         textView_total_tasks.setOnClickListener(view -> {
             taskViewModel.getAllTasks().observe(this, tasks -> {
                 taskListAdapter.submitList(tasks);
@@ -126,16 +130,19 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
+        //Save and load the app theme setting
         SharedPreferences sharedPreferences = getSharedPreferences("AppSettingPrefs", 0);
         boolean isDarkMode = sharedPreferences.getBoolean("NightMode", false);
         SharedPreferences.Editor sharedPreferenceEdit = sharedPreferences.edit();
 
+        //Set the theme of the app
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
+        //Toggle the theme of the app
         FloatingActionButton fab_dark_mode = findViewById(R.id.dark_mode_fab);
         fab_dark_mode.setOnClickListener(view -> {
             if (isDarkMode) {
@@ -155,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
+        //Add the received task to database
         if (requestCode == NEW_TASK_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Bundle bundle = intent.getExtras();
-
             String taskTitle = bundle.getString("TASK_TITLE");
             String taskDescription = bundle.getString("TASK_DESCRIPTION");
             String taskCategory = bundle.getString("TASK_CATEGORY");
@@ -177,18 +184,25 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            //Get the list of selected task category
             LiveData<List<Task>> liveTaskList = null;
-            if (selectedTask == "Total") {
-                liveTaskList = taskViewModel.getAllTasks();
-            } else if (selectedTask == "Pending") {
-                liveTaskList = taskViewModel.getPendingTasks();
-            } else if (selectedTask == "Completed") {
-                liveTaskList = taskViewModel.getCompletedTasks();
+            switch (selectedTask) {
+                case "Total":
+                    liveTaskList = taskViewModel.getAllTasks();
+                    break;
+                case "Pending":
+                    liveTaskList = taskViewModel.getPendingTasks();
+                    break;
+                case "Completed":
+                    liveTaskList = taskViewModel.getCompletedTasks();
+                    break;
             }
+
+            //Get the swiped task
             List<Task> taskList = liveTaskList.getValue();
             Task task = taskList.get(viewHolder.getPosition());
 
-            switch(direction) {
+            switch (direction) {
                 case ItemTouchHelper.RIGHT:
                     taskViewModel.setTaskStatus(task);
                     Toast.makeText(MainActivity.this, "Task Completed", Toast.LENGTH_SHORT).show();
@@ -197,6 +211,8 @@ public class MainActivity extends AppCompatActivity {
                 case ItemTouchHelper.LEFT:
                     Task deletedTask = task;
                     taskViewModel.deleteTask(task);
+
+                    //Undo the deletion of task using snackbar
                     Snackbar.make(recyclerView, "Task Deleted", Snackbar.LENGTH_LONG)
                             .setAction("Undo", new View.OnClickListener() {
                                 @Override
@@ -211,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            //Decorate the swipe actions
             new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                     .addSwipeLeftBackgroundColor(getResources().getColor(R.color.red))
                     .addSwipeLeftActionIcon(R.drawable.ic_delete_task)
@@ -224,26 +241,30 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public void showDeleteDialog() {
-        alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final View deleteDialogView = getLayoutInflater().inflate(R.layout.delete_popup, null);
         ImageView imageView_cancel = deleteDialogView.findViewById(R.id.cancel_imageView);
         Button button_all_tasks = deleteDialogView.findViewById(R.id.all_tasks_button);
         Button button_completed_tasks = deleteDialogView.findViewById(R.id.completed_tasks_button);
 
+        //Display the delete options popup
         alertDialogBuilder.setView(deleteDialogView);
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+        //Dismiss the popup when X is clicked
         imageView_cancel.setOnClickListener(view -> {
             alertDialog.dismiss();
         });
 
+        //Delete all tasks
         button_all_tasks.setOnClickListener(view -> {
             taskViewModel.deleteAllTasks();
             alertDialog.dismiss();
             Toast.makeText(this, "All Tasks Deleted", Toast.LENGTH_SHORT).show();
         });
 
+        //Delete completed tasks
         button_completed_tasks.setOnClickListener(view -> {
             taskViewModel.deleteCompletedTasks();
             alertDialog.dismiss();

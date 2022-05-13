@@ -43,6 +43,8 @@ public class FingerprintFragment extends Fragment {
     public void onViewCreated(View view, @NonNull Bundle savedInstanceState) {
         Context context = view.getContext();
         BiometricManager biometricManager = BiometricManager.from(context);
+
+        //Check that biometric authentication is available
         switch (biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
             case BiometricManager.BIOMETRIC_SUCCESS:
                 Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
@@ -62,13 +64,8 @@ public class FingerprintFragment extends Fragment {
                 break;
         }
 
-        ImageView fingerprint = getView().findViewById(R.id.fingerprint);
-        fingerprint.setOnClickListener(viewItem -> {
-            Intent intent = new Intent(context, MainActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        });
 
+        //Determine how the user authenticated
         executor = ContextCompat.getMainExecutor(context);
         biometricPrompt = new BiometricPrompt((FragmentActivity) context,
                 executor, new BiometricPrompt.AuthenticationCallback() {
@@ -100,12 +97,15 @@ public class FingerprintFragment extends Fragment {
             }
         });
 
+        //Login prompt informations
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Verify your identity")
                 .setSubtitle("Log in using your biometric credential")
                 .setAllowedAuthenticators(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)
                 .build();
 
+        //Display the login prompt
+        ImageView fingerprint = getView().findViewById(R.id.fingerprint);
         fingerprint.setOnClickListener(viewItem -> {
             biometricPrompt.authenticate(promptInfo);
         });
