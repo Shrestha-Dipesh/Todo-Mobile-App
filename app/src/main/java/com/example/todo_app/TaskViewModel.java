@@ -36,7 +36,7 @@ public class TaskViewModel extends AndroidViewModel {
         taskRepository.insertTask(task);
     }
 
-    public void updateTask (Task task, String taskTitle, String taskDescription, String taskCategory, String reminderDate, String reminderTime) {
+    public void updateTask(Task task, String taskTitle, String taskDescription, String taskCategory, String reminderDate, String reminderTime) {
         taskRepository.updateTask(task, taskTitle, taskDescription, taskCategory, reminderDate, reminderTime);
     }
 

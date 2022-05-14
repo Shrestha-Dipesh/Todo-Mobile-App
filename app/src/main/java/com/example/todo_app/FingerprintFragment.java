@@ -5,9 +5,11 @@ import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTI
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
@@ -20,16 +22,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.airbnb.lottie.LottieAnimationView;
 
 import java.util.concurrent.Executor;
 
 public class FingerprintFragment extends Fragment {
 
     private static final int REQUEST_CODE = 1;
-    private Executor executor;
     private BiometricPrompt biometricPrompt;
     private BiometricPrompt.PromptInfo promptInfo;
 
@@ -39,12 +39,30 @@ public class FingerprintFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_fingerprint, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
-    public void onViewCreated(View view, @NonNull Bundle savedInstanceState) {
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        //Animate the login screen components
+        ImageView loginBackground = getView().findViewById(R.id.login_background);
+        loginBackground.setY(-1600);
+        loginBackground.animate().translationY(0).setDuration(1000);
+
+        TextView textView_reminder = getView().findViewById(R.id.reminder_textView);
+        textView_reminder.setY(-1600);
+        textView_reminder.animate().translationY(0).setDuration(1000);
+
+        ImageView fingerprint = getView().findViewById(R.id.fingerprint);
+        fingerprint.setY(1600);
+        fingerprint.animate().translationY(0).setDuration(1000);
+
+        TextView textView_fingerprint = getView().findViewById(R.id.fingerprint_textView);
+        textView_fingerprint.setY(1600);
+        textView_fingerprint.animate().translationY(0).setDuration(1000);
+
+        //Check that biometric authentication is available
         Context context = view.getContext();
         BiometricManager biometricManager = BiometricManager.from(context);
 
-        //Check that biometric authentication is available
         switch (biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
             case BiometricManager.BIOMETRIC_SUCCESS:
                 Log.d("MY_APP_TAG", "App can authenticate using biometrics.");
@@ -62,11 +80,17 @@ public class FingerprintFragment extends Fragment {
                         BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
                 startActivityForResult(enrollIntent, REQUEST_CODE);
                 break;
+            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                break;
+            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+                break;
         }
 
 
         //Determine how the user authenticated
-        executor = ContextCompat.getMainExecutor(context);
+        Executor executor = ContextCompat.getMainExecutor(context);
         biometricPrompt = new BiometricPrompt((FragmentActivity) context,
                 executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
@@ -97,7 +121,7 @@ public class FingerprintFragment extends Fragment {
             }
         });
 
-        //Login prompt informations
+        //Login prompt information
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Verify your identity")
                 .setSubtitle("Log in using your biometric credential")
@@ -105,7 +129,6 @@ public class FingerprintFragment extends Fragment {
                 .build();
 
         //Display the login prompt
-        ImageView fingerprint = getView().findViewById(R.id.fingerprint);
         fingerprint.setOnClickListener(viewItem -> {
             biometricPrompt.authenticate(promptInfo);
         });

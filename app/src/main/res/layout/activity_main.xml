@@ -101,12 +101,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        app:backgroundTint="@color/dark"
+        android:theme="@style/dark_toggle"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toStartOf="@+id/add_task_fab"
         app:layout_constraintStart_toEndOf="@+id/delete_tasks_fab"
-        app:srcCompat="@drawable/ic_dark_mode"
-        app:tint="@color/white" />
+        app:srcCompat="@drawable/ic_dark_mode" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

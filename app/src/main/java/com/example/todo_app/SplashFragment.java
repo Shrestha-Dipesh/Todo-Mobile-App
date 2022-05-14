@@ -21,7 +21,7 @@ public class SplashFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         //Animate the splash screen components
         ImageView splash_background = getView().findViewById(R.id.splash_background);
         splash_background.animate().translationY(-1600).setDuration(1000).setStartDelay(4000);

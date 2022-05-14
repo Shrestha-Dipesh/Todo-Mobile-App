@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "Completed":
                 taskViewModel.getCompletedTasks().observe(this, taskListAdapter::submitList);
-                ;
                 break;
         }
 

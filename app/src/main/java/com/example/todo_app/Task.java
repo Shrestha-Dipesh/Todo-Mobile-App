@@ -6,7 +6,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity(tableName = "task_list")
 public class Task implements Serializable {

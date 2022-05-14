@@ -1,7 +1,6 @@
 package com.example.todo_app;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;

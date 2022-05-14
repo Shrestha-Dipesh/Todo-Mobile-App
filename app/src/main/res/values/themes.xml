@@ -24,4 +24,9 @@
         <item name="android:paddingBottom">20dp</item>
         <item name="background">@android:color/holo_blue_light</item>
     </style>
+
+    <style name="dark_toggle">
+        <item name="colorSecondary">@color/dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+    </style>
 </resources>
