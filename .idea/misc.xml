@@ -6,6 +6,9 @@
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_complete_task.xml" value="0.1" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_dark_mode.xml" value="0.1" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/drawable-anydpi/ic_delete_task.xml" value="0.1" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout-land/delete_popup.xml" value="0.21119929453262787" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout-land/fragment_fingerprint.xml" value="0.21119929453262787" />
+        <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout-land/fragment_splash.xml" value="0.21119929453262787" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_splash.xml" value="0.264" />
         <entry key="..\:/Users/shres/Documents/Level 6/Mobile Application/Todo_App/app/src/main/res/layout/activity_task.xml" value="0.264" />
