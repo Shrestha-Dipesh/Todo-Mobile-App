@@ -22,7 +22,7 @@
 &nbsp;
 ****
 &nbsp;
->## Structure of Architecture componenets
+>## Structure of Architecture components
 ![Architecture Component Structure](Media/architecture.png)
 
 *Fig 1: Architecture component structure*
@@ -31,19 +31,19 @@
 
 `SplashActivity`: When the app loads, the **SplashActivity** is called which first displays the splash screen from **SplashFragment** and after animation ends the fingerprint login is displayed form **FingerprintFragment**.
 
-`MainActivity`: It display the tasks in a list using **RecyclerView** and **TaskViewHolder** inside the **TaskListAdapter** which contains the information for displaying one item.There is an **Observer** that observes the **LiveData** from the database and is notified when changes are made.
+`MainActivity`: It display the tasks in a list using **RecyclerView** and **TaskViewHolder** inside the **TaskListAdapter** which contains the information for displaying one item. There is an **Observer** that observes the **LiveData** from the database and is notified when changes are made.
 
 `TaskActivity`: It adds the new task to the list as per the information entered.
 
 `TaskViewModel`: It provides method for accessing the data layer and it returns **LiveData** so that **MainActivity** can set up the observer.
 
-`LiveData<List<Task>>`: It automatically updates the UI componenets. The **Observer** in **MainActivity** observes the LiveData from the database and is notified when they change.
+`LiveData<List<Task>>`: It automatically updates the UI components. The **Observer** in **MainActivity** observes the LiveData from the database and is notified when they change.
 
-`Repository`: It manages one or mode data sources by exposing methods for the **TaskViewModel** to interact with the underlying data provider (Room Database).
+`Repository`: It manages one or more data sources by exposing methods for the **TaskViewModel** to interact with the underlying data provider (Room Database).
 
 `Room`: It is a wrapper around and implements a SQLite Database.
 
-`TaskDao`: It validates the SQL queries at compile-time and associated it with a method so that when the **TaskRepository** calls a method, Room can execute the  associated query.
+`TaskDao`: It validates the SQL queries at compile-time and associated it with a method so that when the **TaskRepository** calls a method, Room can execute the associated query.
 
 `Task`: It is the entity class that represents a single task.
 \
@@ -206,7 +206,7 @@ When the app is launched, the following animated splash screen will appear on th
 &nbsp;
 
 ### Biometric (Fingerprint) Authentication
-Using the **androidx.biometric** library, fingerprint authentication has been set up which requies the user to scan their fingerprint (registered in the device) in order to use the app functionalities. When user tap on the fingerprint icon, the login prompt will be displayed where they can scan their fingerprint.
+Using the **androidx.biometric** library, fingerprint authentication has been set up which requires the user to scan their fingerprint (registered in the device) in order to use the app functionalities. When user tap on the fingerprint icon, the login prompt will be displayed where they can scan their fingerprint.
 
 ![Fingerprint Success](Media/fingerprint_success.gif)
 
