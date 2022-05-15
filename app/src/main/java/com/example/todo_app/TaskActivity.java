@@ -182,7 +182,9 @@ public class TaskActivity extends AppCompatActivity {
                     String reminderDate = editText_reminder_date.getText().toString();
                     String reminderTime = editText_reminder_time.getText().toString();
                     taskViewModel.updateTask(currentTask, taskTitle, taskDescription, taskCategory, reminderDate, reminderTime);
+                    Toast.makeText(this, "Task Updated", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
+                    finish();
                 }
             });
         }

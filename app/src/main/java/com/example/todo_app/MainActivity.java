@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
             Task task = new Task(taskTitle, taskDescription, taskCategory, reminderDate, reminderTime, "Pending");
             taskViewModel.insertTask(task);
+            Toast.makeText(this, "Task Added", Toast.LENGTH_SHORT).show();
         }
     }
 
